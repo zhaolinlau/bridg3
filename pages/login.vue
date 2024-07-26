@@ -1,7 +1,7 @@
 <template>
-	<div class="hero is-fullhight">
+	<div class="hero is-fullheight">
 		<div class="hero-body">
-			<div class="container">
+			<div class="container is-flex is-justify-content-center">
 				<LoginForm />
 			</div>
 		</div>
