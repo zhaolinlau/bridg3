@@ -5,3 +5,11 @@
 		<NuxtPage />
 	</NuxtLayout>
 </template>
+
+<script setup>
+useHead({
+	htmlAttrs:{
+		class: 'theme-light'
+	}
+})
+</script>

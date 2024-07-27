@@ -15,7 +15,7 @@ watch(user, async () => {
 	if (user.value) {
 		await navigateTo('/')
 	} else {
-		await navigateTo('/login')
+		await navigateTo('/home')
 	}
 }, { immediate: true })
 </script>
