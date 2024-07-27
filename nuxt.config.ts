@@ -18,7 +18,7 @@ export default defineNuxtConfig({
 			login: '/login',
 			callback: '/confirm',
 			include: undefined,
-			exclude: ['/home', '/donate'],
+			exclude: ['/home', '/project', '/donate'],
 			cookieRedirect: false,
 		}
 	},
