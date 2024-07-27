@@ -16,7 +16,6 @@
 						</p>
 						<button class="button" @click="refreshBalance">Refresh Balance</button>
 						<button class="button" @click="transferToken">Transfer Token</button>
-						<button class="button" @click="createEntity">Create Entity</button>
 					</div>
 					<div class="column is-12">
 						<LogoutButton />
@@ -30,25 +29,6 @@
 <script setup>
 const config = useRuntimeConfig()
 const user = useSupabaseUser()
-
-const createEntity = async () => {
-	try {
-		const data = await $fetch(`${config.public.api}/api/wallet/entity`, {
-			method: 'post',
-			headers: {
-				client_id: config.public.clientID,
-				client_secret: config.public.clientSecret,
-				'content-type': 'application/json'
-			},
-			body: {
-				name: 'hello there'
-			}
-		})
-		console.log(data)
-	} catch (error) {
-		console.error(error)
-	}
-}
 
 const transferToken = async () => {
 	try {
