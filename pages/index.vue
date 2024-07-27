@@ -16,6 +16,8 @@
 						</p>
 						<button class="button" @click="refreshBalance">Refresh Balance</button>
 						<button class="button" @click="transferToken">Transfer Token</button>
+						<input type="file" @change="uploadFile">
+						<button class="button" @click="mintCert">Mint Certificate</button>
 					</div>
 					<div class="column is-12">
 						<LogoutButton />
@@ -29,6 +31,36 @@
 <script setup>
 const config = useRuntimeConfig()
 const user = useSupabaseUser()
+
+const files = ref()
+
+const uploadFile = async (evt) => {
+	files.value = evt.target.files
+}
+
+const mintCert = async () => {
+	try {
+		const data = await $fetch(`${config.public.api}/api/certificate/mint-certificate`, {
+			method: 'post',
+			headers: {
+				client_id: config.public.clientID,
+				client_secret: config.public.clientSecret,
+				body: 'form-data'
+			},
+			body: {
+				wallet_address: '0xeC986877959353dD458Db433Ef2F7c12d49ae52b',
+				to: '0xD6C0868b79A0Fcb503daC32cF0Aa1F0D0211bFe3',
+				contract_address: '0x5DFE5cbC5E56E7a31F81475B5F7DC340ac8eB47A',
+				name: 'asd',
+				description: 'gdfesger',
+				callback_url: `${config.public.siteURL}/success`
+			}
+		})
+		console.log(data)
+	} catch (error) {
+		console.error(error)
+	}
+}
 
 const transferToken = async () => {
 	try {
@@ -98,8 +130,8 @@ const createUserWallet = async () => {
 			'content-type': 'application/json'
 		},
 		body: {
-			name: user.value.email,
-			email: user.value.email
+			name: 'asd@gmail.com',
+			email: 'asd@gmail.com',
 		}
 	})
 
