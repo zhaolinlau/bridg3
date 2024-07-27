@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
 	compatibilityDate: '2024-04-03',
 	devtools: { enabled: true },
-	css: ['bulma/css/bulma.min.css'],
+	css: ['bulma/css/bulma.min.css', '~/assets/css/main.css'],
 	modules: ["@nuxtjs/supabase", "@nuxt/icon", "@nuxt/image"],
 	runtimeConfig: {
 		public: {
@@ -18,8 +18,14 @@ export default defineNuxtConfig({
 			login: '/login',
 			callback: '/confirm',
 			include: undefined,
-			exclude: ['/home'],
+			exclude: ['/home', '/project', '/donate'],
 			cookieRedirect: false,
 		}
+	},
+	postcss: {
+		plugins: {
+		  tailwindcss: {},
+		  autoprefixer: {},
+		},
 	}
 })
