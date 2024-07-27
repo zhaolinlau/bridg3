@@ -16,7 +16,6 @@
 						</p>
 						<button class="button" @click="refreshBalance">Refresh Balance</button>
 						<button class="button" @click="transferToken">Transfer Token</button>
-						<input type="file" @change="uploadFile">
 						<button class="button" @click="mintCert">Mint Certificate</button>
 					</div>
 					<div class="column is-12">
@@ -31,12 +30,6 @@
 <script setup>
 const config = useRuntimeConfig()
 const user = useSupabaseUser()
-
-const files = ref()
-
-const uploadFile = async (evt) => {
-	files.value = evt.target.files
-}
 
 const mintCert = async () => {
 	try {
