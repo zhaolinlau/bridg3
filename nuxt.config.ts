@@ -7,6 +7,10 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			siteURL: process.env.NUXT_PUBLIC_SITE_URL,
+			clientID: process.env.MASCHAIN_CLIENT_ID,
+			clientSecret: process.env.MASCHAIN_CLIENT_SECRET,
+			api: process.env.MASCHAIN_API,
+			token: process.env.MASCHAIN_TOKEN_CONTRACT
 		},
 	},
 	supabase: {
