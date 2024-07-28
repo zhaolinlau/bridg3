@@ -152,6 +152,7 @@ const client = useSupabaseClient()
 let { data: projects } = await client
 	.from('project')
 	.select('*')
+	.order("created_at", { ascending: false })
 </script>
 
 <style>
