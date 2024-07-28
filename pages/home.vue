@@ -83,7 +83,7 @@
 				</p>
 				<div class="columns is-multiline">
 					<template v-for="project in projects" :key="project">
-						<div class="column is-4">
+						<div class="column is-4 is-12-touch">
 							<Card style="width: 25rem; overflow: hidden">
 								<template #header>
 									<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
