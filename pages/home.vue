@@ -157,7 +157,7 @@ let { data: projects } = await client
 
 <style>
 .home-bg {
-	background-image: url('img/home_bg.png');
+	background-image: url('/img/home_bg.png');
 	background-repeat: no-repeat;
 	background-size: cover;
 }
