@@ -3,7 +3,7 @@
 	<div class="hero is-fullheight-with-navbar">
 		<div class="hero-body">
 			<div class="columns is-multiline is-centered is-vcentered mx-auto">
-				<div class="column is-6">
+				<div class="column is-6 is-12-touch">
 					<Card style="width: 25rem; overflow: hidden">
 						<template #header>
 							<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
@@ -24,7 +24,7 @@
 				</div>
 
 				<template v-if="user.id != project.user_id">
-					<div class="column is-6">
+					<div class="column is-6 is-12-touch">
 						<Card style="width: 25rem; overflow: hidden">
 							<template #title>Donation Form</template>
 							<template #content>
