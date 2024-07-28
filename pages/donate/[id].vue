@@ -23,28 +23,30 @@
 					</Card>
 				</div>
 
-				<div class="column is-6">
-					<Card style="width: 25rem; overflow: hidden">
-						<template #title>Donation Form</template>
-						<template #content>
-							<form @submit.prevent="transferToken">
-								<div class="field">
-									<label for="" class="label">
-										The amount of token you want to donate:
-									</label>
-									<div class="control">
-										<input type="number" class="input" v-model="donateNo">
+				<template v-if="user.id != project.user_id">
+					<div class="column is-6">
+						<Card style="width: 25rem; overflow: hidden">
+							<template #title>Donation Form</template>
+							<template #content>
+								<form @submit.prevent="transferToken">
+									<div class="field">
+										<label for="" class="label">
+											The amount of token you want to donate:
+										</label>
+										<div class="control">
+											<input type="number" class="input" v-model="donateNo">
+										</div>
 									</div>
-								</div>
-								<div class="field">
-									<div class="control">
-										<Button unstyled label="Donate" type="submit" class="button is-primary w-full" />
+									<div class="field">
+										<div class="control">
+											<Button unstyled label="Donate" type="submit" class="button is-primary w-full" />
+										</div>
 									</div>
-								</div>
-							</form>
-						</template>
-					</Card>
-				</div>
+								</form>
+							</template>
+						</Card>
+					</div>
+				</template>
 			</div>
 		</div>
 	</div>
