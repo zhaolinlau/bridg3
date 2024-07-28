@@ -45,6 +45,12 @@
 					</NuxtLink>
 
 					<div class="navbar-dropdown is-boxed is-right">
+						<NuxtLink class="navbar-item">
+							My Profile
+						</NuxtLink>
+						<NuxtLink class="navbar-item">
+							Settings
+						</NuxtLink>
 						<NuxtLink class="navbar-item" @click="logout">
 							Logout
 						</NuxtLink>

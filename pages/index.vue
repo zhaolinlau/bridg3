@@ -1,5 +1,6 @@
 <template>
-	<div class="hero is-fullheight">
+	<NavBar />
+	<div class="hero is-fullheight-with-navbar">
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns is-multiline has-text-centered">
@@ -8,7 +9,7 @@
 							Hi {{ user.email }} <br> Welcome to FundForNeeds!
 						</p>
 						<p class="title">
-							{{ balance.result }}
+							You have {{ balance.result }} tokens
 						</p>
 						<div class="buttons is-centered">
 							<button class="button" @click="refreshBalance">Refresh Balance</button>

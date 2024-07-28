@@ -7,19 +7,32 @@
 		</div>
 		<div class="column is-12">
 			<div class="buttons is-centered">
-				<button class="button is-light" @click="googleLogin">
-					<span class="icon">
-						<Icon name="mdi:google" size="1.2em" />
+				<button class="button is-fullwidth" @click="googleLogin">
+					<span class="icon-text">
+						<span class="icon">
+							<Icon name="mdi:google" size="1.2em" />
+						</span>
+						<span>Google</span>
 					</span>
 				</button>
-				<button class="button is-link" @click="facebookLogin">
-					<span class="icon">
-						<Icon name="mdi:facebook" size="1.2em" />
+				<button class="button is-link is-fullwidth" @click="facebookLogin">
+					<span class="icon-text">
+						<span class="icon">
+							<Icon name="mdi:facebook" size="1.2em" />
+						</span>
+						<span>
+							Facebook
+						</span>
 					</span>
 				</button>
-				<button class="button is-dark" @click="githubLogin">
-					<span class="icon">
-						<Icon name="mdi:github" size="1.2em" />
+				<button class="button is-dark is-fullwidth" @click="githubLogin">
+					<span class="icon-text">
+						<span class="icon">
+							<Icon name="mdi:github" size="1.2em" />
+						</span>
+						<span>
+							GitHub
+						</span>
 					</span>
 				</button>
 			</div>

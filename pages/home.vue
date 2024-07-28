@@ -1,5 +1,6 @@
 <template>
-	<div class="hero is-fullheight home-bg">
+	<NavBar />
+	<div class="hero is-fullheight-with-navbar home-bg">
 		<div class="hero-body">
 			<div class="container has-text-centered theme-dark">
 				<p class="title">
@@ -76,59 +77,33 @@
 
 	<div class="hero">
 		<div class="hero-body">
-			<p class="title has-text-centered">
-				Latest Projects
-			</p>
-			<div class="flex flex-row">
-				<div class="card m-4 basis-1/3">
-					<div class="card-image">
-
-
-						<div class="relative">
-							<figure class="image is-4by3 w-full">
-								<img src="https://bulma.io/assets/images/placeholders/1280x960.png" alt="Placeholder image" />
-							</figure>
-							<button class="button is-primary text-white absolute top-0 rounded-2xl mx-2 my-5 py-1">Primary</button>
+			<div class="container">
+				<p class="title has-text-centered">
+					Latest Projects
+				</p>
+				<div class="columns is-multiline">
+					<template v-for="project in projects" :key="project">
+						<div class="column is-4">
+							<Card style="width: 25rem; overflow: hidden">
+								<template #header>
+									<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
+								</template>
+								<template #title>{{ project.title }}</template>
+								<template #subtitle>Created on {{ project.created_at }}</template>
+								<template #content>
+									<p>
+										{{ project.content }}
+									</p>
+								</template>
+								<template #footer>
+									<div class="flex gap-4 mt-1">
+										<Button label="View" unstyled class="w-full button is-primary" @click="navigateTo(`/donate/${project.id}`)" />
+									</div>
+								</template>
+							</Card>
 						</div>
+					</template>
 
-					</div>
-					<div class="card-content">
-						<div class="media">
-							<div class="media-left">
-								<figure class="image is-48x48">
-									<img class="is-rounded" src="https://bulma.io/assets/images/placeholders/96x96.png"
-										alt="Placeholder image" />
-								</figure>
-							</div>
-							<div class="media-content">
-								<p class="font-semibold is-4">John Smith</p>
-								<p class="font-medium text-slate-400 is-6">@johnsmith</p>
-							</div>
-							<div class="media-right">
-								<button class="button text-yellow-500 is-warning is-light">On Going</button>
-							</div>
-						</div>
-
-						<div class="content flex flex-col">
-							<div>
-								<h5 class="font-semibold m-0">Donation</h5>
-								<p class="text-end font-medium text-xs">100%</p>
-							</div>
-							<div>
-								<progress class="progress is-success" value="100" max="100">
-									100%
-								</progress>
-							</div>
-							<div class="flex flex-row justify-between font-medium text-xs py-1">
-								<p><span class="text-green-600">900 Tokens</span> raised of <span class="text-green-600">900
-										Tokens</span> Goal</p>
-								<p><span class="text-green-600">5 Days Left</span></p>
-							</div>
-							<div class="flex justify-center mt-3">
-								<button class="button is-success is-outlined py-1 w-28 rounded-lg">View</button>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -169,6 +144,14 @@
 		</section>
 	</footer>
 </template>
+
+<script setup>
+const user = useSupabaseUser()
+const client = useSupabaseClient()
+let { data: projects } = await client
+	.from('project')
+	.select('*')
+</script>
 
 <style>
 .home-bg {

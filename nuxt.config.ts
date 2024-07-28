@@ -28,6 +28,9 @@ export default defineNuxtConfig({
 	primevue: {
 		options: {
 			theme: {
+				options: {
+					darkModeSelector: 'light'
+				},
 				preset: definePreset(Aura, {
 					semantic: {
 						primary: {
