@@ -93,8 +93,32 @@ const transferToken = async () => {
 				callback_url: `${config.public.siteURL}/success`
 			}
 		})
+		alert(`You have donated to the project and the transaction id is ${data.result.transactionHash}`)
+		await mintCert()
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+const mintCert = async () => {
+	try {
+		const data = await $fetch(`${config.public.api}/api/certificate/mint-certificate`, {
+			method: 'post',
+			headers: {
+				client_id: config.public.clientID,
+				client_secret: config.public.clientSecret,
+				body: 'form-data'
+			},
+			body: {
+				wallet_address: maschain.wallet_address,
+				to: myWallet.wallet_address,
+				contract_address: '0x5DFE5cbC5E56E7a31F81475B5F7DC340ac8eB47A',
+				name: `Donation to project id ${project.id}`,
+				description: `Donation from user id ${user.value.id} to user id ${project.user_id}`,
+				callback_url: `${config.public.siteURL}/success`
+			}
+		})
 		console.log(data)
-		alert('You have donated to the project.')
 	} catch (error) {
 		console.error(error)
 	}

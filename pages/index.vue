@@ -13,7 +13,6 @@
 						</p>
 						<div class="buttons is-centered">
 							<button class="button" @click="refreshBalance">Refresh Balance</button>
-							<button class="button" @click="mintCert">Mint Certificate</button>
 						</div>
 					</div>
 				</div>
@@ -54,30 +53,6 @@ const { data: maschainLength } = await client.from('maschain').select('*').eq('u
 
 if (maschainLength.length == 0) {
 	await createUserWallet()
-}
-
-const mintCert = async () => {
-	try {
-		const data = await $fetch(`${config.public.api}/api/certificate/mint-certificate`, {
-			method: 'post',
-			headers: {
-				client_id: config.public.clientID,
-				client_secret: config.public.clientSecret,
-				body: 'form-data'
-			},
-			body: {
-				wallet_address: maschain.wallet_address,
-				to: '0xD6C0868b79A0Fcb503daC32cF0Aa1F0D0211bFe3',
-				contract_address: '0x5DFE5cbC5E56E7a31F81475B5F7DC340ac8eB47A',
-				name: 'asd',
-				description: 'gdfesger',
-				callback_url: `${config.public.siteURL}/success`
-			}
-		})
-		console.log(data)
-	} catch (error) {
-		console.error(error)
-	}
 }
 
 const { data: balance, refresh: refreshBalance } = await useFetch(`${config.public.api}/api/token/balance`, {

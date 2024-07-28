@@ -97,7 +97,8 @@
 								</template>
 								<template #footer>
 									<div class="flex gap-4 mt-1">
-										<Button label="View" unstyled class="w-full button is-primary" @click="navigateTo(`/donate/${project.id}`)" />
+										<Button label="View" unstyled class="w-full button is-primary"
+											@click="navigateTo(`/donate/${project.id}`)" />
 									</div>
 								</template>
 							</Card>
