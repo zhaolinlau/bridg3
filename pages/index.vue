@@ -13,7 +13,6 @@
 						</p>
 						<div class="buttons is-centered">
 							<button class="button" @click="refreshBalance">Refresh Balance</button>
-							<button class="button" @click="transferToken">Transfer Token</button>
 							<button class="button" @click="mintCert">Mint Certificate</button>
 						</div>
 					</div>
@@ -55,9 +54,7 @@ const { data: maschainLength } = await client.from('maschain').select('*').eq('u
 
 if (maschainLength.length == 0) {
 	await createUserWallet()
-	await generateToken()
 }
-
 
 const mintCert = async () => {
 	try {
