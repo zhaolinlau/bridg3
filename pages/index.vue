@@ -7,19 +7,14 @@
 						<p class="title">
 							Hi {{ user.email }} <br> Welcome to FundForNeeds!
 						</p>
-					</div>
-					<div class="buttons">
-						<button class="button" @click="createUserWallet">create user wallet</button>
-						<button class="button" @click="generateToken">Generate Token</button>
 						<p class="title">
 							{{ balance.result }}
 						</p>
-						<button class="button" @click="refreshBalance">Refresh Balance</button>
-						<button class="button" @click="transferToken">Transfer Token</button>
-						<button class="button" @click="mintCert">Mint Certificate</button>
-					</div>
-					<div class="column is-12">
-						<LogoutButton />
+						<div class="buttons is-centered">
+							<button class="button" @click="refreshBalance">Refresh Balance</button>
+							<button class="button" @click="transferToken">Transfer Token</button>
+							<button class="button" @click="mintCert">Mint Certificate</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -30,6 +25,61 @@
 <script setup>
 const config = useRuntimeConfig()
 const user = useSupabaseUser()
+const client = useSupabaseClient()
+
+const createUserWallet = async () => {
+	const data = await $fetch(`${config.public.api}/api/wallet/create-user`, {
+		method: 'post',
+		headers: {
+			client_id: config.public.clientID,
+			client_secret: config.public.clientSecret,
+			'content-type': 'application/json'
+		},
+		body: {
+			name: user.value.email,
+			email: user.value.email,
+		}
+	})
+
+	await client
+		.from('maschain')
+		.insert([
+			{ wallet_address: data.result.wallet.wallet_address },
+		])
+		.select()
+}
+const { data: maschain } = await client.from('maschain').select('*').eq('user_id', user.value.id).single()
+
+const generateToken = async () => {
+	try {
+		const data = await $fetch(`${config.public.api}/api/token/mint`, {
+			method: 'post',
+			headers: {
+				client_id: config.public.clientID,
+				client_secret: config.public.clientSecret,
+				'content-type': 'application/json'
+			},
+			body: {
+				wallet_address: maschain.wallet_address,
+				to: maschain.wallet_address,
+				amount: '1000',
+				contract_address: '0x89e63E4b9fB4f99Ca3641185e3947fA658Ce56f0',
+				callback_url: `${config.public.siteURL}/success`
+			}
+		})
+		console.log(data)
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+const { data: maschainLength } = await client.from('maschain').select('*').eq('user_id', user.value.id)
+
+if (maschainLength.length == 0) {
+	await createUserWallet()
+	await generateToken()
+}
+
 
 const mintCert = async () => {
 	try {
@@ -41,7 +91,7 @@ const mintCert = async () => {
 				body: 'form-data'
 			},
 			body: {
-				wallet_address: '0xeC986877959353dD458Db433Ef2F7c12d49ae52b',
+				wallet_address: maschain.wallet_address,
 				to: '0xD6C0868b79A0Fcb503daC32cF0Aa1F0D0211bFe3',
 				contract_address: '0x5DFE5cbC5E56E7a31F81475B5F7DC340ac8eB47A',
 				name: 'asd',
@@ -65,13 +115,15 @@ const transferToken = async () => {
 				'content-type': 'application/json'
 			},
 			body: {
-				wallet_address: '0xDE8E9C222e32987216F9b20A71ce61935C32Fb6d',
-				to: '0x21D413b91C137280567fb37FC98662C1fc00Fa2A',
+				wallet_address: '0x21D413b91C137280567fb37FC98662C1fc00Fa2A',
+				to: '0x8a57f5093Fd9F3ff15A87827642f76Ba2C5aD6C2',
 				amount: '1000',
 				contract_address: '0x89e63E4b9fB4f99Ca3641185e3947fA658Ce56f0',
 				callback_url: `${config.public.siteURL}/success`
 			}
 		})
+
+		await refreshBalance()
 		console.log(data)
 	} catch (error) {
 		console.error(error)
@@ -86,48 +138,10 @@ const { data: balance, refresh: refreshBalance } = await useFetch(`${config.publ
 		'content-type': 'application/json'
 	},
 	body: {
-		wallet_address: '0xDE8E9C222e32987216F9b20A71ce61935C32Fb6d',
+		wallet_address: maschain.wallet_address,
 		contract_address: '0x89e63E4b9fB4f99Ca3641185e3947fA658Ce56f0'
 	},
 })
 
-const generateToken = async () => {
-	try {
-		const data = await $fetch(`${config.public.api}/api/token/mint`, {
-			method: 'post',
-			headers: {
-				client_id: config.public.clientID,
-				client_secret: config.public.clientSecret,
-				'content-type': 'application/json'
-			},
-			body: {
-				wallet_address: '0xDE8E9C222e32987216F9b20A71ce61935C32Fb6d',
-				to: '0xDE8E9C222e32987216F9b20A71ce61935C32Fb6d',
-				amount: '1000',
-				contract_address: '0x89e63E4b9fB4f99Ca3641185e3947fA658Ce56f0',
-				callback_url: `${config.public.siteURL}/success`
-			}
-		})
-		console.log(data)
-	} catch (error) {
-		console.error(error)
-	}
-}
 
-const createUserWallet = async () => {
-	const data = await $fetch(`${config.public.api}/api/wallet/create-user`, {
-		method: 'post',
-		headers: {
-			client_id: config.public.clientID,
-			client_secret: config.public.clientSecret,
-			'content-type': 'application/json'
-		},
-		body: {
-			name: 'asd@gmail.com',
-			email: 'asd@gmail.com',
-		}
-	})
-
-	console.log(data)
-}
 </script>

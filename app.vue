@@ -9,7 +9,7 @@
 <script setup>
 useHead({
 	htmlAttrs:{
-		class: 'theme-light'
+		class: 'theme-light has-navbar-fixed-top'
 	}
 })
 </script>
