@@ -1,5 +1,6 @@
 <template>
-	<div class="hero is-fullheight">
+	<NavBar />
+	<div class="hero is-fullheight-with-navbar">
 		<div class="hero-body">
 			<div class="container is-flex is-justify-content-center">
 				<LoginForm />
@@ -9,6 +10,8 @@
 </template>
 
 <script setup>
+import NavBar from '~/components/NavBar.vue';
+
 const user = useSupabaseUser()
 
 watch(user, async () => {
