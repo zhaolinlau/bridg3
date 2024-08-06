@@ -9,6 +9,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+	layout: false
+})
+
 const user = useSupabaseUser()
 
 watch(user, async () => {
