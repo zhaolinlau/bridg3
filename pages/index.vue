@@ -12,7 +12,6 @@
 							You have {{ balance.result }} tokens
 						</p>
 						<div class="buttons is-centered">
-							<button class="button" @click="mintToken">Mint Token</button>
 							<button class="button" @click="refreshBalance">Refresh Balance</button>
 						</div>
 					</div>
@@ -36,7 +35,6 @@ const mintToken = async () => {
 	}
 }
 
-
 const createUserWallet = async () => {
 	const data = await $fetch('/api/wallet/create', {
 		method: 'post'
@@ -53,6 +51,7 @@ const { data: maschainLength } = await client.from('maschain').select('*').eq('u
 
 if (maschainLength.length == 0) {
 	await createUserWallet()
+	await mintToken()
 }
 
 const { data: balance, refresh: refreshBalance } = await useFetch('/api/token/balance', {
