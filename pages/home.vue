@@ -1,5 +1,4 @@
 <template>
-	<NavBar />
 	<div class="hero is-fullheight-with-navbar home-bg">
 		<div class="hero-body">
 			<div class="container has-text-centered theme-dark">

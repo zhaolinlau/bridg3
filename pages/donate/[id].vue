@@ -1,5 +1,4 @@
 <template>
-	<NavBar />
 	<div class="hero is-fullheight-with-navbar">
 		<div class="hero-body">
 			<div class="columns is-multiline is-centered is-vcentered mx-auto">
