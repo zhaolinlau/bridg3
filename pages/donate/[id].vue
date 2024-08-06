@@ -4,47 +4,55 @@
 		<div class="hero-body">
 			<div class="columns is-multiline is-centered is-vcentered mx-auto">
 				<div class="column is-6 is-12-touch">
-					<Card style="width: 25rem; overflow: hidden">
-						<template #header>
-							<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
-						</template>
-						<template #title>{{ project.title }}</template>
-						<template #subtitle>Created on {{ project.created_at }}</template>
-						<template #content>
-							<p>
-								{{ project.content }}
-							</p>
-						</template>
-						<template #footer>
-							<div class="flex gap-4 mt-1">
-								<Button label="Back" class="w-full button is-link" unstyled @click="navigateTo('/home')" />
+					<div class="card">
+						<div class="card-image">
+							<figure class="image">
+								<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
+							</figure>
+						</div>
+						<div class="media">
+							<div class="media-content">
+								<p class="title">
+									{{ project.title }}
+								</p>
+								<p class="subtitle">
+									Created on {{ new Date(project.created_at).toUTCString() }}
+								</p>
 							</div>
-						</template>
-					</Card>
+						</div>
+						<div class="card-content">
+							<div class="content">
+								{{ project.content }}
+							</div>
+						</div>
+						<footer class="card-footer">
+							<NuxtLink class="card-footer-item" @click="navigateTo('/home')">Back</NuxtLink>
+						</footer>
+					</div>
 				</div>
 
 				<template v-if="user.id != project.user_id">
 					<div class="column is-6 is-12-touch">
-						<Card style="width: 25rem; overflow: hidden">
-							<template #title>Donation Form</template>
-							<template #content>
-								<form @submit.prevent="transferToken">
-									<div class="field">
-										<label for="" class="label">
-											The amount of token you want to donate:
-										</label>
-										<div class="control">
-											<input type="number" class="input" v-model="donateNo">
+						<div class="box">
+							<p class="title">Donation Form</p>
+							<form @submit.prevent="transferToken">
+								<div class="field">
+									<label for="" class="label">
+										The amount of token you want to donate:
+									</label>
+									<div class="control">
+										<input type="number" class="input" v-model="donateNo" required>
+									</div>
+								</div>
+								<div class="field">
+									<div class="control">
+										<div class="buttons">
+											<button type="submit" class="button is-primary is-fullwidth">Donate</button>
 										</div>
 									</div>
-									<div class="field">
-										<div class="control">
-											<Button unstyled label="Donate" type="submit" class="button is-primary w-full" />
-										</div>
-									</div>
-								</form>
-							</template>
-						</Card>
+								</div>
+							</form>
+						</div>
 					</div>
 				</template>
 			</div>
@@ -58,21 +66,20 @@ const route = useRoute()
 const client = useSupabaseClient()
 const donateNo = ref('')
 const user = useSupabaseUser()
-const config = useRuntimeConfig()
 
-let { data: project } = await client
+const { data: project } = await client
 	.from('project')
 	.select("*")
 	.eq('id', route.params.id)
 	.single()
 
-let { data: maschain } = await client
+const { data: maschain } = await client
 	.from('maschain')
 	.select("*")
 	.eq('user_id', project.user_id)
 	.single()
 
-let { data: myWallet } = await client
+const { data: myWallet } = await client
 	.from('maschain')
 	.select("*")
 	.eq('user_id', user.value.id)
@@ -80,47 +87,15 @@ let { data: myWallet } = await client
 
 const transferToken = async () => {
 	try {
-		const data = await $fetch(`${config.public.api}/api/token/token-transfer`, {
+		const data = await $fetch('/api/token/transfer', {
 			method: 'post',
-			headers: {
-				client_id: config.public.clientID,
-				client_secret: config.public.clientSecret,
-				'content-type': 'application/json'
-			},
 			body: {
-				wallet_address: myWallet.wallet_address,
-				to: maschain.wallet_address,
-				amount: donateNo.value,
-				contract_address: '0x89e63E4b9fB4f99Ca3641185e3947fA658Ce56f0',
-				callback_url: `${config.public.siteURL}/success`
+				sender: myWallet.wallet_address,
+				receiver: maschain.wallet_address,
+				donateNo: donateNo.value,
 			}
 		})
 		alert(`You have donated to the project and the transaction id is ${data.result.transactionHash}`)
-		await mintCert()
-	} catch (error) {
-		console.error(error)
-	}
-}
-
-const mintCert = async () => {
-	try {
-		const data = await $fetch(`${config.public.api}/api/certificate/mint-certificate`, {
-			method: 'post',
-			headers: {
-				client_id: config.public.clientID,
-				client_secret: config.public.clientSecret,
-				body: 'form-data'
-			},
-			body: {
-				wallet_address: maschain.wallet_address,
-				to: myWallet.wallet_address,
-				contract_address: '0x5DFE5cbC5E56E7a31F81475B5F7DC340ac8eB47A',
-				name: `Donation to project id ${project.id}`,
-				description: `Donation from user id ${user.value.id} to user id ${project.user_id}`,
-				callback_url: `${config.public.siteURL}/success`
-			}
-		})
-		console.log(data)
 	} catch (error) {
 		console.error(error)
 	}

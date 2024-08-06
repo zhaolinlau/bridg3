@@ -12,6 +12,7 @@
 							You have {{ balance.result }} tokens
 						</p>
 						<div class="buttons is-centered">
+							<button class="button" @click="mintToken">Mint Token</button>
 							<button class="button" @click="refreshBalance">Refresh Balance</button>
 						</div>
 					</div>
@@ -22,24 +23,24 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
 const user = useSupabaseUser()
 const client = useSupabaseClient()
 
-const createUserWallet = async () => {
-	const data = await $fetch(`${config.public.api}/api/wallet/create-user`, {
-		method: 'post',
-		headers: {
-			client_id: config.public.clientID,
-			client_secret: config.public.clientSecret,
-			'content-type': 'application/json'
-		},
-		body: {
-			name: user.value.email,
-			email: user.value.email,
-		}
-	})
+const mintToken = async () => {
+	try {
+		await $fetch('/api/token/mint', {
+			method: 'post'
+		})
+	} catch (error) {
+		console.error(error)
+	}
+}
 
+
+const createUserWallet = async () => {
+	const data = await $fetch('/api/wallet/create', {
+		method: 'post'
+	})
 	await client
 		.from('maschain')
 		.insert([
@@ -47,7 +48,6 @@ const createUserWallet = async () => {
 		])
 		.select()
 }
-const { data: maschain } = await client.from('maschain').select('*').eq('user_id', user.value.id).single()
 
 const { data: maschainLength } = await client.from('maschain').select('*').eq('user_id', user.value.id)
 
@@ -55,16 +55,7 @@ if (maschainLength.length == 0) {
 	await createUserWallet()
 }
 
-const { data: balance, refresh: refreshBalance } = await useFetch(`${config.public.api}/api/token/balance`, {
-	method: 'post',
-	headers: {
-		client_id: config.public.clientID,
-		client_secret: config.public.clientSecret,
-		'content-type': 'application/json'
-	},
-	body: {
-		wallet_address: maschain.wallet_address,
-		contract_address: '0x89e63E4b9fB4f99Ca3641185e3947fA658Ce56f0'
-	},
+const { data: balance, refresh: refreshBalance } = await useFetch('/api/token/balance', {
+	method: 'post'
 })
 </script>

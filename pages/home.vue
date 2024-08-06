@@ -17,6 +17,48 @@
 		<div class="hero-body">
 			<div class="container">
 				<p class="title has-text-centered">
+					Latest Projects
+				</p>
+				<div class="columns is-multiline">
+					<template v-for="project in projects" :key="project">
+						<div class="column is-4 is-12-touch">
+							<div class="card">
+								<div class="card-image">
+									<figure class="image">
+										<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
+									</figure>
+								</div>
+								<div class="media">
+									<div class="media-content">
+										<p class="title">
+											{{ project.title }}
+										</p>
+										<p class="subtitle">
+											Created on {{ new Date(project.created_at).toUTCString() }}
+										</p>
+									</div>
+								</div>
+								<div class="card-content">
+									<div class="content">
+										{{ project.content }}
+									</div>
+								</div>
+								<footer class="card-footer">
+									<NuxtLink class="card-footer-item" @click="navigateTo(`/donate/${project.id}`)">View</NuxtLink>
+								</footer>
+							</div>
+						</div>
+					</template>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="hero">
+		<div class="hero-body">
+			<div class="container">
+				<p class="title has-text-centered">
 					Completed Projects
 				</p>
 				<div class="flex flex-row">
@@ -77,41 +119,6 @@
 
 	<div class="hero">
 		<div class="hero-body">
-			<div class="container">
-				<p class="title has-text-centered">
-					Latest Projects
-				</p>
-				<div class="columns is-multiline">
-					<template v-for="project in projects" :key="project">
-						<div class="column is-4 is-12-touch">
-							<Card style="width: 25rem; overflow: hidden">
-								<template #header>
-									<NuxtImg alt="user header" src="https://bulma.io/assets/images/placeholders/1280x960.png" />
-								</template>
-								<template #title>{{ project.title }}</template>
-								<template #subtitle>Created on {{ project.created_at }}</template>
-								<template #content>
-									<p>
-										{{ project.content }}
-									</p>
-								</template>
-								<template #footer>
-									<div class="flex gap-4 mt-1">
-										<Button label="View" unstyled class="w-full button is-primary"
-											@click="navigateTo(`/donate/${project.id}`)" />
-									</div>
-								</template>
-							</Card>
-						</div>
-					</template>
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="hero">
-		<div class="hero-body">
 			<div class="container is-flex is-justify-content-center">
 				<NuxtLink class="button is-primary text-white">
 					View All Projects
@@ -147,7 +154,6 @@
 </template>
 
 <script setup>
-const user = useSupabaseUser()
 const client = useSupabaseClient()
 let { data: projects } = await client
 	.from('project')

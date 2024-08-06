@@ -48,7 +48,7 @@ const googleLogin = async () => {
 	const { error } = await client.auth.signInWithOAuth({
 		provider: 'google',
 		options: {
-			redirectTo: `${config.public.siteURL}/confirm`
+			redirectTo: `${config.public.siteUrl}/confirm`
 		}
 	})
 
@@ -61,7 +61,7 @@ const facebookLogin = async () => {
 	const { error } = await client.auth.signInWithOAuth({
 		provider: 'facebook',
 		options: {
-			redirectTo: `${config.public.siteURL}/confirm`
+			redirectTo: `${config.public.siteUrl}/confirm`
 		}
 	})
 
@@ -74,7 +74,7 @@ const githubLogin = async () => {
 	const { error } = await client.auth.signInWithOAuth({
 		provider: 'github',
 		options: {
-			redirectTo: `${config.public.siteURL}/confirm`
+			redirectTo: `${config.public.siteUrl}/confirm`
 		}
 	})
 

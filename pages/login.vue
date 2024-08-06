@@ -10,8 +10,6 @@
 </template>
 
 <script setup>
-import NavBar from '~/components/NavBar.vue';
-
 const user = useSupabaseUser()
 
 watch(user, async () => {

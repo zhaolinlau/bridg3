@@ -8,8 +8,8 @@
 
 <script setup>
 useHead({
-	htmlAttrs:{
-		class: 'theme-light has-navbar-fixed-top'
+	htmlAttrs: {
+		class: 'has-navbar-fixed-top'
 	}
 })
 </script>
