@@ -48,6 +48,9 @@
 						<NuxtLink class="navbar-item">
 							My Profile
 						</NuxtLink>
+						<NuxtLink class="navbar-item" to="/transactions">
+							My Transactions
+						</NuxtLink>
 						<NuxtLink class="navbar-item">
 							Settings
 						</NuxtLink>

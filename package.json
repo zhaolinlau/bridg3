@@ -16,5 +16,8 @@
     "bulma": "^1.0.2",
     "nuxt": "^3.12.4",
     "vue": "^3.4.34"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.1.68"
   }
 }
