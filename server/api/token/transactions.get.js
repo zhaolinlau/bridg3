@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 		params: {
 			wallet_address: myWallet.wallet_address,
 			contract_address: config.maschainTokenContract,
-			filter: '0x00ab4E6d98EB428322ad23fd2d74854d90E3B6f5'
+			filter: 'from'
 		}
 	})
 
