@@ -14,7 +14,7 @@ const fetchTransactions = async () => {
 }
 
 const { data: transactions, status: transactionsStatus, refresh: refreshTransactions } = await useFetch('/api/token/transactions', {
-	method: 'get'
+	method: 'get',
 })
 </script>
 
@@ -22,20 +22,20 @@ const { data: transactions, status: transactionsStatus, refresh: refreshTransact
 	<div class="hero is-fullheight-with-navbar">
 		<div class="hero-body">
 			<div class="container">
-				<form @submit.prevent="fetchTransactions">
+				<form @change="fetchTransactions">
 					<div class="field">
-						<label class="label">Page</label>
+						<label class="label">Current Page</label>
 						<div class="control">
-							<input type="number" class="input" v-model="page" min="1" :max="transactions.pagination.last_page">
+							<div class="select">
+								<select v-model="page">
+									<template v-for="pageNo in transactions.pagination.last_page">
+										<option :value="pageNo" :selected="pageNo == transactions.pagination.current_page ? true : false">
+											{{ pageNo }}
+										</option>
+									</template>
+								</select>
+							</div>
 						</div>
-						<p class="help is-info">
-							Current page: {{ transactions.pagination.current_page }},
-							Last page: {{ transactions.pagination.last_page }}
-						</p>
-					</div>
-					<div class="control">
-						<input type="submit" class="button is-primary" :value="`Go to page ${page}`"
-							:disabled="page == transactions.pagination.current_page ? true : false">
 					</div>
 				</form>
 
