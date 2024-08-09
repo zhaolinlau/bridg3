@@ -1,6 +1,4 @@
 <script setup>
-const results = ref([])
-const pagination = ref([])
 const page = ref(1)
 
 const fetchTransactions = async () => {
@@ -11,12 +9,12 @@ const fetchTransactions = async () => {
 		}
 	})
 
-	results.value = data.result
-	pagination.value = data.pagination
+	await refreshTransactions()
+	transactions.value = data
 }
 
-onMounted(async () => {
-	await fetchTransactions()
+const { data: transactions, status: transactionsStatus, refresh: refreshTransactions } = await useFetch('/api/token/transactions', {
+	method: 'get'
 })
 </script>
 
@@ -28,15 +26,16 @@ onMounted(async () => {
 					<div class="field">
 						<label class="label">Page</label>
 						<div class="control">
-							<input type="number" class="input" v-model="page" min="1" :max="pagination.last_page">
+							<input type="number" class="input" v-model="page" min="1" :max="transactions.pagination.last_page">
 						</div>
 						<p class="help is-info">
-							Current page: {{ pagination.current_page }},
-							Last page: {{ pagination.last_page }}
+							Current page: {{ transactions.pagination.current_page }},
+							Last page: {{ transactions.pagination.last_page }}
 						</p>
 					</div>
 					<div class="control">
-						<input type="submit" class="button is-primary" :value="`Go to page ${page}`">
+						<input type="submit" class="button is-primary" :value="`Go to page ${page}`"
+							:disabled="page == transactions.pagination.current_page ? true : false">
 					</div>
 				</form>
 
@@ -52,7 +51,8 @@ onMounted(async () => {
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="result in results" :key="result">
+							<tr v-for="result in transactions.result" :key="result"
+								:class="transactionsStatus == 'pending' ? 'is-skeleton' : ''">
 								<td>{{ result.to }}</td>
 								<td>{{ result.status }}</td>
 								<td>{{ result.transactionHash }}</td>

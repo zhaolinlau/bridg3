@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig()
 	const client = await serverSupabaseClient(event)
 	const user = await serverSupabaseUser(event)
-	const { page } = getQuery(event)
+	const query = getQuery(event)
 
 	const { data: myWallet } = await client
 		.from('maschain')
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 			wallet_address: myWallet.wallet_address,
 			contract_address: config.maschainTokenContract,
 			filter: 'from',
-			page: page
+			page: query.page
 		}
 	})
 
